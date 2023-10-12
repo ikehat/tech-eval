@@ -1,0 +1,9 @@
+# tech-eval
+This is an effort to evalute multiple client and server technologies by implement the same small functionality in different technologies.
+
+## Schema
+
+Clients: ...
+Contacts: ...
+Interactions: ...
+
