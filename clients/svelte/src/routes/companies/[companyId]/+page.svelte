@@ -1,8 +1,8 @@
 <!-- src/routes/+page.svelte -->
 <script>
-    import axios from 'axios';
     import { goto } from '$app/navigation';
     import { sharedData } from '$lib/store.js';
+    import { deleteContact } from '$lib/apiService.js';
     
     export let data;
     let { companyId, contacts } = data;
@@ -23,7 +23,7 @@
         goto(url, {replaceState: true});
     }
     
-    function addContact() {
+    function handleAdd() {
         console.log('Add new contact');
         const blankContact = {
             id: false,
@@ -36,19 +36,19 @@
         moveTo('/add-contact', blankContact);
     }
 
-    function editContact(id) {
+    function handleEdit(id) {
         console.log('Edit contact with id:', id);
         const contact = contacts.find(contact => contact.id === id);
         moveTo('/edit-contact', contact);
     }
 
-    function deleteContact(id) {
+    function handleDelete(id) {
         console.log('Delete contact with id:', id);
         contacts = contacts.filter(contact => contact.id !== id);
-        axios.delete(`http://localhost:5000/companies/${companyId}/contacts/${id}`);
+        deleteContact(companyId, id);
     }
 
-    function openContact(contact) {
+    function handleOpen(contact) {
         goto(`/companies/${companyId}/contacts/${contact.id}`);
     }
 </script>
@@ -73,12 +73,12 @@
                 <td>{contact.mobile}</td>
                 <td>{contact.status}</td>
                 <td>
-                    <button on:click={() => editContact(contact.id)}>Edit</button>
-                    <button on:click={() => deleteContact(contact.id)}>Delete</button>
-                    <button on:click={() => openContact(contact)}>Open</button>
+                    <button on:click={() => handleEdit(contact.id)}>Edit</button>
+                    <button on:click={() => handleDelete(contact.id)}>Delete</button>
+                    <button on:click={() => handleOpen(contact)}>Open</button>
                 </td>
             </tr>
         {/each}
     </tbody>
 </table>
-<button on:click={addContact}>Add</button>
+<button on:click={handleAdd}>Add</button>

@@ -1,9 +1,9 @@
 <!-- src/routes/+page.svelte -->
 <script>
-    import axios from 'axios';
     import { goto } from '$app/navigation';
     import { sharedData } from '$lib/store.js';
-    
+    import { deleteInteraction } from '$lib/apiService.js';
+
     export let data;
     let { companyId, contactId, interactions } = data;
 
@@ -18,14 +18,12 @@
                 description: {name: 'Description', type: 'text'},
                 status: {name: 'Status'}
             },
-            postRequest: `http://localhost:5000/companies/${companyId}/contacts/${contactId}/interactions`,
-            putRequest: `http://localhost:5000/companies/${companyId}/contacts/${contactId}/interactions/${data.id}`,
             pageBack: `/companies/${companyId}/contacts/${contactId}`
         };
         goto(url, {replaceState: true});
     }
     
-    function addInteraction() {
+    function handleAdd() {
         console.log('Add new interaction');
         const blankInteraction = {
             id: false,
@@ -36,16 +34,16 @@
         moveTo('/add-interaction', blankInteraction);
     }
 
-    function editInteraction(id) {
+    function handleEdit(id) {
         console.log('Edit interaction with id:', id);
         const interaction = interactions.find(interaction => interaction.id === id);
         moveTo('/edit-contact', interaction);
     }
 
-    function deleteInteraction(id) {
+    function handleDelete(id) {
         console.log('Delete interaction with id:', id);
         interactions = interactions.filter(interaction => interaction.id !== id);
-        axios.delete(`http://localhost:5000/companies/${companyId}/contacts/${contactId}/interactions/${id}`);
+        deleteInteraction(companyId, contactId, id);
     }
 </script>
 
@@ -67,11 +65,11 @@
                 <td>{interaction.description}</td>
                 <td>{interaction.status}</td>
                 <td>
-                    <button on:click={() => editInteraction(interaction.id)}>Edit</button>
-                    <button on:click={() => deleteInteraction(interaction.id)}>Delete</button>
+                    <button on:click={() => handleEdit(interaction.id)}>Edit</button>
+                    <button on:click={() => handleDelete(interaction.id)}>Delete</button>
                 </td>
             </tr>
         {/each}
     </tbody>
 </table>
-<button on:click={addInteraction}>Add</button>
+<button on:click={handleAdd}>Add</button>

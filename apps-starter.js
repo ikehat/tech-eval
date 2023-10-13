@@ -12,7 +12,7 @@ nodeServer.main();
 
 // REACT
 const reactApp = express();
-const reactPort = 3000;
+const reactPort = 2000;
 
 const reactBuildPath = path.join(__dirname, 'clients', 'react', 'build');
 reactApp.use(express.static(reactBuildPath));
@@ -41,7 +41,7 @@ http.createServer(vueApp).listen(vuePort, () => {
 });
 
 // SVELTE
-const sveltePort = 2000;
+const sveltePort = 3000;
 import('./clients/svelte/build/index.js')
   .then(() => {
       console.log('Svelte build index.js loaded and executed.');

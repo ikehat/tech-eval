@@ -3,6 +3,7 @@ import React from 'react';
 import { useCompanies } from '../contexts/CompaniesContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+const BASE_URL = 'http://node.ik2.co:5000';
 
 const CompanyTable = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const CompanyTable = () => {
   const handleDelete = (id) => {
     const updatedCompanies = companies.filter(company => company.id !== id);
     setCompanies(updatedCompanies);
-    axios.delete(`http://localhost:5000/companies/${id}`);
+    axios.delete(`${BASE_URL}/companies/${id}`);
   };
 
   const handleOpenCompany = (company) => {

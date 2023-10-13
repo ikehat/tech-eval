@@ -1,7 +1,7 @@
 // src/stores/companies.js
 // import { defineStore } from '@pinia/vue';
 import { defineStore } from 'pinia'
-const server = "http://localhost:5000";
+const server = "http://node.ik2.co:5000";
 export const useCompaniesStore = defineStore('companies', {
     state: () => ({
         companies: [],

@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useCompanies } from '../contexts/CompaniesContext';
 import axios from 'axios';
 import { useNavigate, useParams  } from 'react-router-dom';
+const BASE_URL = 'http://node.ik2.co:5000';
 
 function InteractionTable() {
     const navigate = useNavigate();
@@ -34,7 +35,7 @@ function InteractionTable() {
         interactions.splice(interactionIndex, 1);
 
         setCompanies([...companies]);
-        axios.delete(`http://localhost:5000/companies/${company.id}/contacts/${contactId}/interactions/${interactionid}`);
+        axios.delete(`${BASE_URL}/companies/${company.id}/contacts/${contactId}/interactions/${interactionid}`);
     };
 
     function handleBack() {

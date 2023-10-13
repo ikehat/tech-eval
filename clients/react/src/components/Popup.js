@@ -3,6 +3,7 @@ import { useCompanies } from '../contexts/CompaniesContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
+const BASE_URL = 'http://node.ik2.co:5000';
 const Popup = () => {
   const { companies, setCompanies, activeCompany, activeContact } = useCompanies();
   const navigate = useNavigate();
@@ -24,11 +25,11 @@ const Popup = () => {
     if (company.id) {
       const companyIndex = companies.findIndex(c => c.id === parseInt(company.id));
       updatedCompanies[companyIndex] = company;
-      axios.put(`http://localhost:5000/companies/${company.id}`, company);
+      axios.put(`${BASE_URL}/companies/${company.id}`, company);
       setCompanies(updatedCompanies);
     } else {
       (async () => {
-        const res = await axios.post('http://localhost:5000/companies', company);
+        const res = await axios.post(BASE_URL+'/companies', company);
         const newCompany = res.data;
         updatedCompanies.push(newCompany);
         setCompanies(updatedCompanies);
@@ -41,11 +42,11 @@ const Popup = () => {
     if (contact.id) {
       const contactIndex = contacts.findIndex(c => c.id === parseInt(contact.id));
       contacts[contactIndex] = contact;
-      axios.put(`http://localhost:5000/companies/${activeCompany.id}/contacts/${contact.id}`, contact);
+      axios.put(`${BASE_URL}/companies/${activeCompany.id}/contacts/${contact.id}`, contact);
       setCompanies([...companies]);
     } else {
       (async () => {
-        const res = await axios.post(`http://localhost:5000/companies/${activeCompany.id}/contacts`, contact);
+        const res = await axios.post(`${BASE_URL}/companies/${activeCompany.id}/contacts`, contact);
         const newContact = res.data;
         contacts.push(newContact); 
         setCompanies([...companies]);
@@ -58,11 +59,11 @@ const Popup = () => {
     if (interaction.id) {
       const interactionIndex = interactions.findIndex(i => i.id === parseInt(interaction.id));
       interactions[interactionIndex] = interaction;
-      axios.put(`http://localhost:5000/companies/${activeCompany.id}/contacts/${activeContact.id}/interactions/${interaction.id}`, interaction);
+      axios.put(`${BASE_URL}/companies/${activeCompany.id}/contacts/${activeContact.id}/interactions/${interaction.id}`, interaction);
       setCompanies([...companies]);
     } else {
       (async () => {
-        const res = await axios.post(`http://localhost:5000/companies/${activeCompany.id}/contacts/${activeContact.id}/interactions`, interaction);
+        const res = await axios.post(`${BASE_URL}/companies/${activeCompany.id}/contacts/${activeContact.id}/interactions`, interaction);
         const newInteraction = res.data;
         interactions.push(newInteraction);
         setCompanies([...companies]);
