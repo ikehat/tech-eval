@@ -10,7 +10,7 @@ export async function fetchCompanies() {
 }
 export async function addCompany(companyData) {
     try {
-        fetch(`${BASE_URL}/companies`, {
+        await fetch(`${BASE_URL}/companies`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ export async function addCompany(companyData) {
 }
 export async function editCompany(companyId, companyData) {
     try {
-        fetch(`${BASE_URL}/companies/${companyId}`, {
+        await fetch(`${BASE_URL}/companies/${companyId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ export async function editCompany(companyId, companyData) {
 }
 export async function deleteCompany(companyId) {
     try {
-        fetch(`${BASE_URL}/companies/${companyId}`, {
+        await fetch(`${BASE_URL}/companies/${companyId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,7 +60,7 @@ export async function fetchContacts(companyId) {
 }
 export async function addContact(companyId, contactData) {
     try {
-        fetch(`${BASE_URL}/companies/${companyId}/contacts`, {
+        await fetch(`${BASE_URL}/companies/${companyId}/contacts`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -74,7 +74,7 @@ export async function addContact(companyId, contactData) {
 }
 export async function editContact(companyId, contactId, contactData) {
     try {
-        fetch(`${BASE_URL}/companies/${companyId}/contacts/${contactId}`, {
+        await fetch(`${BASE_URL}/companies/${companyId}/contacts/${contactId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -88,7 +88,7 @@ export async function editContact(companyId, contactId, contactData) {
 }
 export async function deleteContact(companyId, contactId) {
     try {
-        fetch(`${BASE_URL}/companies/${companyId}/contacts/${contactId}`, {
+        await fetch(`${BASE_URL}/companies/${companyId}/contacts/${contactId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ export async function fetchInteractions(companyId, contactId) {
 }
 export async function addInteraction(companyId, contactId, interactionData) {
     try {
-        fetch(`${BASE_URL}/companies/${companyId}/contacts/${contactId}/interactions`, {
+        await fetch(`${BASE_URL}/companies/${companyId}/contacts/${contactId}/interactions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -124,7 +124,7 @@ export async function addInteraction(companyId, contactId, interactionData) {
 }
 export async function editInteraction(companyId, contactId, interactionId, interactionData) {
     try {
-        fetch(`${BASE_URL}/companies/${companyId}/contacts/${contactId}/interactions/${interactionId}`, {
+        await fetch(`${BASE_URL}/companies/${companyId}/contacts/${contactId}/interactions/${interactionId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -138,7 +138,7 @@ export async function editInteraction(companyId, contactId, interactionId, inter
 }
 export async function deleteInteraction(companyId, contactId, interactionId) {
     try {
-        fetch(`${BASE_URL}/companies/${companyId}/contacts/${contactId}/interactions/${interactionId}`, {
+        await fetch(`${BASE_URL}/companies/${companyId}/contacts/${contactId}/interactions/${interactionId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
