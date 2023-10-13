@@ -1,0 +1,72 @@
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+.overlay {
+    background:rgb(0,0,0,0.5);
+    display:flex;
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:100%;
+    width:100%;
+}
+.popup {
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+}
+.popup-item {
+    display:flex;
+    margin-bottom:10px;
+}
+.popup-item > div {
+    min-width: 120px;
+    display: inline-flex;
+      align-self: center;
+}
+.popup-item {
+    width: 100%;
+}
+
+table {
+    margin-top:15px;
+    margin-bottom:15px;
+    border-spacing: 0px;
+    border: 1px solid black;
+}
+th,td {
+    min-width: 185px;
+    overflow: hidden;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 6px;
+}
+.table-options button {
+    margin-right: 10px;
+}
+
+input {
+    font-size: 14px;
+    color: #2D3748;
+    padding-left: 8px;
+    padding-right: 8px;
+    height: 32px;
+}
+
+button {
+    display: inline-flex;
+    height: 24px;
+    padding: 0px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    background: #3182CE;
+    border: none;
+    color: white;
+    outline: none;
+    cursor: pointer;
+}
