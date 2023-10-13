@@ -2,6 +2,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const CompaniesContext = createContext();
+const BASE_URL = 'http://node.ik2.co:5000';
 
 export const CompaniesProvider = ({ children }) => {
   const [companies, setCompanies] = useState([]);
@@ -11,7 +12,7 @@ export const CompaniesProvider = ({ children }) => {
 
   useEffect(() => {
     const getCompanies = async () => {
-      const res = await fetch('http://localhost:5000/companies');
+      const res = await fetch(`${BASE_URL}/companies`);
       const data = await res.json();
       setCompanies(data);
     };
