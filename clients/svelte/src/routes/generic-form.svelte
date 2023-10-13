@@ -10,27 +10,27 @@
         formData[event.target.name] = event.target.value;
     }
 
-    function handlerSubmit() {
+    async function handlerSubmit() {
         if (formData.id) {
             if (type === 'company') {
-                editCompany(formData.id, formData);
+                await editCompany(formData.id, formData);
             }
             else if (type === 'contact') {
-                editContact(companyId, formData.id, formData);
+                await editContact(companyId, formData.id, formData);
             }
             else if (type === 'interaction') {
-                editInteraction(companyId, contactId, formData.id, formData);
+                await editInteraction(companyId, contactId, formData.id, formData);
             }
         }
         else {
             if (type === 'company') {
-                addCompany(formData);
+                await addCompany(formData);
             }
             else if (type === 'contact') {
-                addContact(companyId, formData);
+                await addContact(companyId, formData);
             }
             else if (type === 'interaction') {
-                addInteraction(companyId, contactId, formData);
+                await addInteraction(companyId, contactId, formData);
             }
         }
 

@@ -53,6 +53,10 @@ import('./clients/svelte/build/index.js')
 // server.js
 const MAINPORT = 80;
 
+app.get('/css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'style.css'));
+});
+
 app.use((req, res, next) => {
   if (req.subdomains.length > 0 && req.subdomains[0] === 'react') {
     const newURL = `http://${req.hostname}:${reactPort}${req.originalUrl}`;
@@ -67,10 +71,6 @@ app.use((req, res, next) => {
   else {
       next();
   }
-});
-
-app.get('/css', (req, res) => {
-  res.sendFile(path.join(__dirname, 'style.css'));
 });
 
 app.get('/', (req, res) => {
