@@ -5,7 +5,7 @@ import { useNavigate, useParams  } from 'react-router-dom';
 
 function InteractionTable() {
     const navigate = useNavigate();
-    const { interactions, getInteractions, setActiveCompany, setActiveContact, deleteInteraction } = useCompanies();
+    const { interactions, getInteractions, setActiveCompany, activeCompany, setActiveContact, activeContact, deleteInteraction } = useCompanies();
     const { companyId, contactId } = useParams();
 
 
@@ -15,10 +15,10 @@ function InteractionTable() {
     }, []);
 
     useEffect(() => {
-        if (companyId && contactId) {
+        if (activeCompany && activeContact) {
             getInteractions();
         }
-    }, [companyId, contactId]);
+    }, [activeCompany, activeContact]);
 
     const handleAdd = () => {
         navigate(`/add-interaction`, { state: { type: 'interaction', initialData: { id: false, date: '', description: '', status: '' }, pageBack: `/company/${companyId}/contact/${contactId}/interaction` } });
