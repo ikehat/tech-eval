@@ -1,22 +1,22 @@
 // ./src/components/ContactTable.js
 import React, { useEffect } from 'react';
 import { useCompanies } from '../contexts/CompaniesContext';
-import axios from 'axios';
 import { useNavigate, useParams  } from 'react-router-dom';
-const BASE_URL = 'http://node.ik2.co:5000';
 
 function ContactTable() {
   const navigate = useNavigate();
-  const { companies, setCompanies, setActiveCompany } = useCompanies();
+  const { contacts, getContacts, setActiveCompany, activeCompany, deleteContact } = useCompanies();
   const { companyId } = useParams();
 
   useEffect(() => {
-    const activeCompany = companies.find(c => c.id === parseInt(companyId));
-    setActiveCompany(activeCompany);
-  }, [setActiveCompany, companyId]);
-  
-  const company = companies.find(c => c.id === parseInt(companyId));
-  const contacts = company.contacts;
+    setActiveCompany(companyId);
+  }, []);
+
+  useEffect(() => {
+    if (activeCompany) {
+      getContacts();
+    }
+  }, [activeCompany]);
 
   const handleAdd = () => {
     navigate(`/add-contact`, { state: { type: 'contact', initialData: { id: false, name: '', email: '', mobile: '', status: '', interactions: [] }, pageBack: `/company/${companyId}/contact` } });
@@ -27,12 +27,7 @@ function ContactTable() {
   };
 
   const handleDelete = (contactid) => {
-      // const updatedCompanies = [...companies];
-      const contactIndex = contacts.findIndex(c => c.id === parseInt(contactid));
-      contacts.splice(contactIndex, 1);
-
-      setCompanies([...companies]);
-      axios.delete(`${BASE_URL}/companies/${companyId}/contacts/${contactid}`);
+      deleteContact(contactid);
   };
 
   const handleOpenContact = (contact) => {
@@ -45,6 +40,7 @@ function ContactTable() {
 
   return (
     <div>
+      <h1>Contact</h1>
       <button onClick={handleBack}>Back</button>
       <table>
         <thead>

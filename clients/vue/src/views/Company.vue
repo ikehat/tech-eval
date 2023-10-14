@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Company</h1>
     <table>
       <thead>
         <tr>
@@ -31,7 +32,6 @@ import { useCompaniesStore } from '@/stores/companies';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { onMounted } from 'vue';
-
 
 export default {
   name: "CompanyTable",

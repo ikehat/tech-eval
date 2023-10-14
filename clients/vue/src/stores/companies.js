@@ -5,6 +5,8 @@ const server = "http://node.ik2.co:5000";
 export const useCompaniesStore = defineStore('companies', {
     state: () => ({
         companies: [],
+        contacts: [],
+        interactions: [],
         activeCompany: null,
         activeContact: null,
         activeInteraction: null,
@@ -21,7 +23,6 @@ export const useCompaniesStore = defineStore('companies', {
                 console.error("Failed to fetch companies:", error);
             }
         },
-        
         async addCompany(company) {
             try {
                 const res = await fetch(`${server}/companies`, {
@@ -56,6 +57,14 @@ export const useCompaniesStore = defineStore('companies', {
             }
         },
         
+        async fetchContacts() {
+            try {
+                const res = await fetch(`${server}/companies/${this.activeCompany}/contacts`);
+                this.contacts = await res.json();
+            } catch (error) {
+                console.error("Failed to fetch contacts:", error);
+            }
+        },
         async addContact(contact) {
             try {
                 const res = await fetch(`${server}/companies/${this.activeCompany}/contacts`, {
@@ -64,7 +73,7 @@ export const useCompaniesStore = defineStore('companies', {
                     body: JSON.stringify(contact)
                 });
                 const newContact = await res.json();
-                this.companies = this.companies.map(company => company.id == this.activeCompany ? company.contacts.push(newContact) : company);
+                this.contacts.push(newContact);
             } catch (error) {
                 console.error("Failed to add contact:", error);
             }
@@ -76,25 +85,28 @@ export const useCompaniesStore = defineStore('companies', {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(contact)
                 });
-                this.companies = this.companies.map(company => company.id == this.activeCompany ? company.contacts.map(c => c.id == contact.id ? contact : c) : company);
+                this.contacts = this.contacts.map(c => c.id == contact.id ? contact : c);
             } catch (error) {
                 console.error("Failed to update contact:", error);
             }
         },
         async deleteContact(id) {
             try {
-                const companies = JSON.parse(JSON.stringify(this.companies))
                 await fetch(`${server}/companies/${this.activeCompany}/contacts/${id}`, { method: 'DELETE' });
-                const activeCompany = companies.find(company => company.id == this.activeCompany);
-                const contacts = activeCompany.contacts.filter(contact => contact.id != id);
-                activeCompany.contacts = contacts;
-                const newCompanies = companies.map(company => company.id == this.activeCompany ? activeCompany : company);
-                this.companies = newCompanies;
+                this.contacts = this.contacts.filter(contact => contact.id != id);
             } catch (error) {
                 console.error("Failed to delete contact:", error);
             }
         },
 
+        async fetchInteractions() {
+            try {
+                const res = await fetch(`${server}/companies/${this.activeCompany}/contacts/${this.activeContact}/interactions`);
+                this.interactions = await res.json();
+            } catch (error) {
+                console.error("Failed to fetch interactions:", error);
+            }
+        },
         async addInteraction(interaction) {
             try {
                 const res = await fetch(`${server}/companies/${this.activeCompany}/contacts/${this.activeContact}/interactions`, {
@@ -103,10 +115,7 @@ export const useCompaniesStore = defineStore('companies', {
                     body: JSON.stringify(interaction)
                 });
                 const newInteraction = await res.json();
-                const activeCompany = this.companies.find(company => company.id == this.activeCompany);
-                const activeContact = activeCompany.contacts.find(contact => contact.id == this.activeContact);
-                activeContact.interactions.push(newInteraction);
-                this.companies = this.companies.map(company => company.id == this.activeCompany ? activeCompany : company);
+                this.interactions.push(newInteraction);
             } catch (error) {
                 console.error("Failed to add interaction:", error);
             }
@@ -118,10 +127,7 @@ export const useCompaniesStore = defineStore('companies', {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(interaction)
                 });
-                const activeCompany = this.companies.find(company => company.id == this.activeCompany);
-                const activeContact = activeCompany.contacts.find(contact => contact.id == this.activeContact);
-                activeContact.interactions = activeContact.interactions.map(i => i.id == interaction.id ? interaction : i);
-                this.companies = this.companies.map(company => company.id == this.activeCompany ? activeCompany : company);
+                this.interactions = this.interactions.map(i => i.id == interaction.id ? interaction : i);
             } catch (error) {
                 console.error("Failed to update interaction:", error);
             }
@@ -129,18 +135,12 @@ export const useCompaniesStore = defineStore('companies', {
         async deleteInteraction(id) {
             try {
                 await fetch(`${server}/companies/${this.activeCompany}/contacts/${this.activeContact}/interactions/${id}`, { method: 'DELETE' });
-                const activeCompany = this.companies.find(company => company.id == this.activeCompany);
-                const activeContact = activeCompany.contacts.find(contact => contact.id == this.activeContact);
-                activeContact.interactions = activeContact.interactions.filter(interaction => interaction.id != id);
-                this.companies = this.companies.map(company => company.id == this.activeCompany ? activeCompany : company);
+                this.interactions = this.interactions.filter(interaction => interaction.id != id);
             } catch (error) {
                 console.error("Failed to delete interaction:", error);
             }
         },
 
-        setCompanies(companies) {
-            this.companies = companies;
-        },
         setActiveCompany(companyId) {
             this.activeCompany = companyId;
         },

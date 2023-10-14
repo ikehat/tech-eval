@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h1>Interaction</h1>
         <button @click="handleBack">Back</button>
         <table>
             <thead>
@@ -43,7 +44,9 @@ export default {
         const router = useRouter();
         const store = useCompaniesStore();
         onMounted(() => {
-            store.fetchCompanies();
+            store.setActiveCompany(companyId);
+            store.setActiveContact(contactId);
+            store.fetchInteractions();
         });
     
         const handleAdd = () => {
@@ -81,16 +84,8 @@ export default {
             });
         };
     
-        // Use computed to get a reactive reference to companies
-        // const interactions = computed(() => store.activeContact?.interactions);
-        
-        const activeCompany = computed(() => store.companies.find(company => company.id == companyId));
-        const activeContact = computed(() => activeCompany.value?.contacts.find(contact => contact.id == contactId));
-        const interactions = computed(() => activeContact.value?.interactions);
+        const interactions = computed(() => store.interactions);
 
-        store.setActiveCompany(companyId);
-        store.setActiveContact(contactId);
-    
         return {
             interactions,
             handleBack,

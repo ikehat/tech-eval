@@ -14,7 +14,7 @@ async function main() {
     const isOnline = fs.existsSync(KEY) && fs.existsSync(CERT);
     const cors = require('cors');
 
-    const dataFilepath = path.join(__dirname, 'data.json');
+    const dataFilepath = path.join(__dirname, '..', 'data.json');
     if (!fs.existsSync(dataFilepath)) {
         fs.writeFileSync(dataFilepath, '[]', 'utf8');
     }
@@ -76,7 +76,11 @@ async function main() {
 
     // GET all companies
     app.get('/companies', (req, res) => {
-        res.json(companies);
+        const retVal = JSON.parse(JSON.stringify(companies));
+        retVal.forEach(c => {
+            delete c.contacts;
+        });
+        res.json(retVal);
     });
 
     // GET a single company by ID
@@ -119,7 +123,13 @@ async function main() {
     // GET all contacts for a company
     app.get('/companies/:companyid/contacts', (req, res) => {
         const company = companies.find(c => c.id === parseInt(req.params.companyid));
-        if (company) res.json(company.contacts);
+        if (company) {
+            const retVal = JSON.parse(JSON.stringify(company.contacts));
+            retVal.forEach(c => {
+                delete c.interactions;
+            });
+            res.json(retVal);
+        }
         else res.status(404).send('company not found');
     });
 
@@ -269,10 +279,10 @@ async function main() {
         }
     });
 
-    app.get('/*', (req, res) => {
-        console.log(req.url)
-        res.status(404).send('Not found');
-    });
+    // app.get('/*', (req, res) => {
+    //     console.log(req.url)
+    //     res.status(404).send('Not found');
+    // });
 
     if (isOnline) {
         const options = {

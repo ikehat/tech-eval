@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useCompanies } from '../contexts/CompaniesContext';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
 
-const BASE_URL = 'http://node.ik2.co:5000';
 const Popup = () => {
-  const { companies, setCompanies, activeCompany, activeContact } = useCompanies();
+  const { addCompany, editCompany, addContact, editContact, addInteraction, editInteraction } = useCompanies();
   const navigate = useNavigate();
   const location = useLocation();
   const type = location.state.type;
@@ -21,53 +19,26 @@ const Popup = () => {
   }, [initialData]);
 
   function addEditCompany(company) {
-    const updatedCompanies = [...companies];
     if (company.id) {
-      const companyIndex = companies.findIndex(c => c.id === parseInt(company.id));
-      updatedCompanies[companyIndex] = company;
-      axios.put(`${BASE_URL}/companies/${company.id}`, company);
-      setCompanies(updatedCompanies);
+      editCompany(company);
     } else {
-      (async () => {
-        const res = await axios.post(BASE_URL+'/companies', company);
-        const newCompany = res.data;
-        updatedCompanies.push(newCompany);
-        setCompanies(updatedCompanies);
-      })();
+      addCompany(company);
     }
   }
 
   function addEditContact(contact) {
-    const contacts = activeCompany.contacts;
     if (contact.id) {
-      const contactIndex = contacts.findIndex(c => c.id === parseInt(contact.id));
-      contacts[contactIndex] = contact;
-      axios.put(`${BASE_URL}/companies/${activeCompany.id}/contacts/${contact.id}`, contact);
-      setCompanies([...companies]);
+      editContact(contact);
     } else {
-      (async () => {
-        const res = await axios.post(`${BASE_URL}/companies/${activeCompany.id}/contacts`, contact);
-        const newContact = res.data;
-        contacts.push(newContact); 
-        setCompanies([...companies]);
-    })();
+      addContact(contact);
     }
   }
 
   function addEditInteraction(interaction) {
-    const interactions = activeContact.interactions;
     if (interaction.id) {
-      const interactionIndex = interactions.findIndex(i => i.id === parseInt(interaction.id));
-      interactions[interactionIndex] = interaction;
-      axios.put(`${BASE_URL}/companies/${activeCompany.id}/contacts/${activeContact.id}/interactions/${interaction.id}`, interaction);
-      setCompanies([...companies]);
+      editInteraction(interaction);
     } else {
-      (async () => {
-        const res = await axios.post(`${BASE_URL}/companies/${activeCompany.id}/contacts/${activeContact.id}/interactions`, interaction);
-        const newInteraction = res.data;
-        interactions.push(newInteraction);
-        setCompanies([...companies]);
-      })();
+      addInteraction(interaction);
     }
   }
 

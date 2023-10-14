@@ -50,6 +50,7 @@
     }
 </script>
 
+<h1>Company</h1>
 <table>
     <thead>
         <tr>

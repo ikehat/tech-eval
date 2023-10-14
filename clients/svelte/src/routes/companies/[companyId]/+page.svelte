@@ -53,6 +53,7 @@
     }
 </script>
 
+<h1>Contact</h1>
 <button on:click={()=> goto(`/`)}>Back</button>
 <table>
     <thead>

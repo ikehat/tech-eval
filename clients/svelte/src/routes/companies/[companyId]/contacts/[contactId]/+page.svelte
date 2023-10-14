@@ -47,6 +47,7 @@
     }
 </script>
 
+<h1>Contact</h1>
 <button on:click={()=> goto(`/companies/${companyId}`)}>Back</button>
 <table>
     <thead>

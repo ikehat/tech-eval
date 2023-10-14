@@ -7,7 +7,7 @@ const path = require('path');
 const nodeApp = express();
 const nodePort = 5000;
 
-const nodeServer = require('./server/index.js');
+const nodeServer = require('./server/node/index.js');
 nodeServer.main();
 
 // REACT

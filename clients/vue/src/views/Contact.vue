@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h1>Contact</h1>
         <button @click="handleBack">Back</button>
         <table>
             <thead>
@@ -45,7 +46,8 @@ export default {
         const companyId = route.params.companyId;
         const store = useCompaniesStore();
         onMounted(() => {
-            store.fetchCompanies();
+            store.setActiveCompany(companyId);
+            store.fetchContacts();
         });
 
         const handleOpen = (contact) => {
@@ -91,10 +93,7 @@ export default {
         };
     
         // Use computed to get a reactive reference to companies
-        const activeCompany = computed(() => store.companies.find(company => company.id == companyId));
-        const contacts = computed(() => activeCompany.value?.contacts);
-
-        store.setActiveCompany(companyId);
+        const contacts = computed(() => store.contacts);
     
         return {
             contacts,

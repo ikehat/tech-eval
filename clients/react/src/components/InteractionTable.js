@@ -1,25 +1,24 @@
 // ./src/components/InteractionTable.js
 import React, { useEffect } from 'react';
 import { useCompanies } from '../contexts/CompaniesContext';
-import axios from 'axios';
 import { useNavigate, useParams  } from 'react-router-dom';
-const BASE_URL = 'http://node.ik2.co:5000';
 
 function InteractionTable() {
     const navigate = useNavigate();
-    const { companies, setCompanies, setActiveCompany, setActiveContact } = useCompanies();
+    const { interactions, getInteractions, setActiveCompany, setActiveContact, deleteInteraction } = useCompanies();
     const { companyId, contactId } = useParams();
 
-    useEffect(() => {
-        const activeCompany = companies.find(c => c.id === parseInt(companyId));
-        const activeContact = activeCompany.contacts.find(c => c.id === parseInt(contactId));
-        setActiveCompany(activeCompany);
-        setActiveContact(activeContact);
-    },[setActiveCompany, companies, setActiveContact, companyId, contactId]);
 
-    const company = companies.find(c => c.id === parseInt(companyId));
-    const contact = company.contacts.find(c => c.id === parseInt(contactId));
-    const interactions = contact.interactions;
+    useEffect(() => {
+        setActiveCompany(companyId);
+        setActiveContact(contactId);
+    }, []);
+
+    useEffect(() => {
+        if (companyId && contactId) {
+            getInteractions();
+        }
+    }, [companyId, contactId]);
 
     const handleAdd = () => {
         navigate(`/add-interaction`, { state: { type: 'interaction', initialData: { id: false, date: '', description: '', status: '' }, pageBack: `/company/${companyId}/contact/${contactId}/interaction` } });
@@ -30,12 +29,7 @@ function InteractionTable() {
     };
 
     const handleDelete = (interactionid) => {
-        // const updatedCompanies = [...companies];
-        const interactionIndex = interactions.findIndex(c => c.id === parseInt(interactionid));
-        interactions.splice(interactionIndex, 1);
-
-        setCompanies([...companies]);
-        axios.delete(`${BASE_URL}/companies/${company.id}/contacts/${contactId}/interactions/${interactionid}`);
+        deleteInteraction(interactionid);
     };
 
     function handleBack() {
@@ -44,6 +38,7 @@ function InteractionTable() {
 
     return (
     <div>
+        <h1>Interaction</h1>
         <button onClick={handleBack}>Back</button>
         <table>
             <thead>

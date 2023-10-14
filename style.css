@@ -37,7 +37,7 @@ table {
     border: 1px solid black;
 }
 th,td {
-    min-width: 185px;
+    min-width: 190px;
     overflow: hidden;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
